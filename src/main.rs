@@ -7,6 +7,7 @@
 use crate::server::execute;
 
 mod adapter;
+mod config;
 mod entities;
 mod errors;
 mod server;

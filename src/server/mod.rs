@@ -1,11 +1,7 @@
-mod cli;
-
 use crate::adapter::router::router;
-use crate::server::cli::Cli;
+use crate::config::Cli;
 use axum::Router;
 use clap::Parser;
-use std::fs;
-use std::sync::{Arc, RwLock};
 use tokio::signal;
 use tracing::info;
 

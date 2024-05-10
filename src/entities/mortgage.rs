@@ -4,7 +4,6 @@ use crate::errors::AppError::{LoanProgramEmpty, LoanProgramMoreThanOne, MinIniti
 use chrono::prelude::*;
 use chrono::Months;
 use serde::{Deserialize, Serialize};
-use std::ops::BitAnd;
 
 // Минимальная процент первоначального взноса.
 const MIN_INITIAL_PAYMENT_PERCENT: f64 = 20_f64;

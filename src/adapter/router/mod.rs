@@ -1,4 +1,3 @@
-use std::sync::{Arc, RwLock};
 use std::time::Duration;
 
 use crate::adapter::router::handler::mortgage;
@@ -13,13 +12,11 @@ mod handler;
 
 /// Создание роутера и регистрация хендлеров.
 pub async fn router() -> Router {
-    Router::new()
-        .route("/execute", post(mortgage))
-        .layer((
-            TraceLayer::new_for_http()
-                .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
-                .on_response(trace::DefaultOnResponse::new().level(Level::INFO)),
-            // Graceful shutdown
-            TimeoutLayer::new(Duration::from_secs(5)),
-        ))
+    Router::new().route("/execute", post(mortgage)).layer((
+        TraceLayer::new_for_http()
+            .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
+            .on_response(trace::DefaultOnResponse::new().level(Level::INFO)),
+        // Graceful shutdown
+        TimeoutLayer::new(Duration::from_secs(5)),
+    ))
 }

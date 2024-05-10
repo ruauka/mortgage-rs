@@ -1,4 +1,4 @@
-use crate::entities::mortgage::{Aggregates, Mortgage, Params, Program};
+use crate::entities::mortgage::{Aggregates, Params, Program};
 use serde::{Deserialize, Serialize};
 
 /// Запрос.

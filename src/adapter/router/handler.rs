@@ -1,7 +1,6 @@
 use crate::entities::mortgage::Mortgage;
-use crate::entities::schema::{Request, Response};
-use crate::errors::AppError;
-use crate::errors::AppError::MinInitialPayment;
+use crate::entities::schema::Request;
+use crate::errors::{AppError, Result};
 use axum::Json;
 
 /// Эндпоинт расчета ипотеки.
