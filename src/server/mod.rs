@@ -1,7 +1,9 @@
+use crate::adapter::cache::{AppState, SharedState};
 use crate::adapter::router::router;
 use crate::config::Cli;
 use axum::Router;
 use clap::Parser;
+use std::sync::{Arc, RwLock};
 use tokio::signal;
 use tracing::info;
 
@@ -14,14 +16,12 @@ pub async fn execute() {
         .with_target(false)
         .compact()
         .init();
-
-    // // создание 'state' объекта
-    // let shared_state: Arc<RwLock<Storage>> = StorageState::default();
-
+    // создание 'state' объекта
+    let shared_state: Arc<RwLock<AppState>> = SharedState::default();
     // хост и порт
     let address: String = format!("{}:{}", cfg.host, cfg.port);
     // создание роутера и регистрация хендлеров
-    let router: Router = router().await;
+    let router: Router = router(shared_state).await;
     // tcp-движок
     let listener = tokio::net::TcpListener::bind(address).await.unwrap();
     info!(

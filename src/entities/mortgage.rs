@@ -15,7 +15,7 @@ const MILITARY: f64 = 9_f64;
 const BASE: f64 = 10_f64;
 
 // Структура ипотечной программы.
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Mortgage {
     pub params: Params,
     pub program: Program,
@@ -23,15 +23,15 @@ pub struct Mortgage {
 }
 
 /// Параметры кредита.
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Params {
-    object_cost: f64,
-    initial_payment: f64,
-    months: u8,
+    pub object_cost: f64,
+    pub initial_payment: f64,
+    pub months: u8,
 }
 
 /// Ипотечная программа.
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Program {
     #[serde(skip_serializing_if = "Option::is_none")]
     base: Option<bool>,
@@ -42,13 +42,13 @@ pub struct Program {
 }
 
 /// Расчитываемые агрегаты.
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Aggregates {
-    rate: f64,
-    loan_sum: f64,
-    monthly_payment: f64,
-    overpayment: f64,
-    last_payment_date: String,
+    pub rate: f64,
+    pub loan_sum: f64,
+    pub monthly_payment: f64,
+    pub overpayment: f64,
+    pub last_payment_date: String,
 }
 
 impl Mortgage {
@@ -110,13 +110,13 @@ impl Mortgage {
 
     /// Определение процентной ставки.
     pub fn rate_calc(&mut self) -> Result<(), AppError> {
-        if self.program.salary.unwrap() {
+        if self.program.salary.unwrap_or_default() {
             self.aggregates.rate = SALARY;
             Ok(())
-        } else if self.program.military.unwrap() {
+        } else if self.program.military.unwrap_or_default() {
             self.aggregates.rate = MILITARY;
             Ok(())
-        } else if self.program.base.unwrap() {
+        } else if self.program.base.unwrap_or_default() {
             self.aggregates.rate = BASE;
             Ok(())
         } else {

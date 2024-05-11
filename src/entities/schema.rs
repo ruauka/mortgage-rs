@@ -11,7 +11,7 @@ pub struct Request {
 }
 
 /// Ответ кэша.
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Response {
     pub id: u32,
     pub params: Params,
