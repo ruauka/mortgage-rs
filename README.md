@@ -189,10 +189,10 @@
 Требуется реализовать middleware, который будет выводить в консоль информацию о запросе:
 - `status_code` - http код запроса
 - `duration` - время работы эндпоинта (μs - microseconds)
-   ```text
-   2024-05-12T17:47:51.097698Z  INFO status_code: 200 OK, duration: 361 μs
-   2024-05-12T17:47:55.116620Z ERROR status_code: 400 Bad Request, duration: 344 μs
-   ```
+```bash
+2024-05-12T17:47:51.097698Z  INFO status_code: 200 OK, duration: 361 μs
+2024-05-12T17:47:55.116620Z ERROR status_code: 400 Bad Request, duration: 344 μs
+```
 Требование обязательно, даже если используемый вами web-framework предоставляет такой функционал "из коробки".
 
 ## Требования и ограничения
