@@ -199,19 +199,19 @@
 1. Можно использовать любой web-framework.
 2. Сервис должен иметь настраиваемую конфигурацию.
    `Host` и `port`, на которых поднимается сервис, должены указываться в переменных окружения. Дефолтные значение:
-    ```rust
-    localhost:8080
-    ```
+```yaml
+localhost:8080
+```
 3. Покрытие unit-тестами > 80%.
 4. Код должен проходить проверку `clippy`. Конфигурация:
-   ```toml
-   [workspace.lints]
-   clippy.all = { level = "deny", priority = -1 }
-   clippy.pedantic = { level = "deny", priority = -1 }
-   clippy.restriction = { level = "deny", priority = -1 }
-   clippy.cargo = { level = "deny", priority = -1 }
-   clippy.nursery = "deny"
-   ```
+```toml
+[workspace.lints]
+clippy.all = { level = "deny", priority = -1 }
+clippy.pedantic = { level = "deny", priority = -1 }
+clippy.restriction = { level = "deny", priority = -1 }
+clippy.cargo = { level = "deny", priority = -1 }
+clippy.nursery = "deny"
+```
 5. Проект содержит `Dockerfile`. "Вес" образа должен быть не более `130 MB`.
 6. Проект содержит `Makefile`, в котором указаны команды:
     - запуска тестов
