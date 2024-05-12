@@ -1,7 +1,7 @@
 use crate::adapter::cache::{insert, SharedState};
 use crate::entities::mortgage::Mortgage;
 use crate::entities::schema::{Request, Response};
-use crate::errors::AppError::{EmptyCache, MinInitialPayment};
+use crate::errors::AppError::EmptyCache;
 use crate::errors::{AppError, Result};
 use axum::extract::State;
 use axum::Json;

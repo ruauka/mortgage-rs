@@ -1,5 +1,5 @@
 # Rust as the base image
-FROM rust:1.75.0-slim-bullseye as build
+FROM rust:1.75.0-slim-bullseye as builder
 
 # fix rust http openssl bug
 RUN apt update
@@ -29,7 +29,7 @@ RUN cargo build --release
 FROM debian:12.5-slim
 WORKDIR /app
 # Copy from the previous build
-COPY --from=build /mg/target/release/mg .
+COPY --from=builder /mg/target/release/mg .
 
 # Run the binary
 CMD ["./mg", "--host", "0.0.0.0", "--port", "8080"]

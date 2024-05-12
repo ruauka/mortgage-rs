@@ -1,7 +1,5 @@
 use crate::entities::mortgage::Mortgage;
-use axum::extract::State;
 use std::collections::HashMap;
-use std::path::Component::ParentDir;
 use std::sync::{Arc, RwLock};
 
 /// State объект.
