@@ -11,7 +11,7 @@ use std::collections::HashMap;
 pub async fn mortgage(
     State(state): State<SharedState>,
     Json(req): Json<Request>,
-) -> Result<Json<Mortgage>, AppError> {
+) -> Result<Json<Response>, AppError> {
     // объект кредита с нужными полями
     let mut loan: Mortgage = Mortgage::new(req);
     // проверка на наличие больше 1 программы в запросе
@@ -29,9 +29,11 @@ pub async fn mortgage(
     // расчет даты последнего платежа
     loan.last_payment_date_calc();
     // запись расчета в кэш
-    insert(state, loan.clone()).await;
+    let id: u32 = insert(state, loan.clone()).await;
+    // формирование ответа
+    let resp: Response = Response::new(id, loan);
     // ответ 200
-    Ok(Json(loan))
+    Ok(Json(resp))
 }
 
 /// Получение из кэша всех расчитанных ипотек.
@@ -48,16 +50,7 @@ pub async fn cache(State(state): State<SharedState>) -> Result<Json<Vec<Response
     // перекладка из кэша
     for (k, v) in cache.iter() {
         r.id = *k;
-        r.params.object_cost = v.params.object_cost;
-        r.params.initial_payment = v.params.initial_payment;
-        r.params.months = v.params.months;
-        r.program = v.program.clone();
-        r.aggregates.rate = v.aggregates.rate;
-        r.aggregates.loan_sum = v.aggregates.loan_sum;
-        r.aggregates.monthly_payment = v.aggregates.monthly_payment;
-        r.aggregates.overpayment = v.aggregates.overpayment;
-        r.aggregates.last_payment_date = v.aggregates.last_payment_date.clone();
-
+        r.loan = v.clone();
         response.push(r.clone())
     }
     // ответ 200

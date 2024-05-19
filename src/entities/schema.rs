@@ -1,4 +1,4 @@
-use crate::entities::mortgage::{Aggregates, Params, Program};
+use crate::entities::mortgage::{Mortgage, Program};
 use serde::{Deserialize, Serialize};
 
 /// Запрос.
@@ -14,7 +14,12 @@ pub struct Request {
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Response {
     pub id: u32,
-    pub params: Params,
-    pub program: Program,
-    pub aggregates: Aggregates,
+    pub loan: Mortgage,
+}
+
+impl Response {
+    /// Конструктор
+    pub fn new(id: u32, loan: Mortgage) -> Self {
+        Self { id, loan }
+    }
 }

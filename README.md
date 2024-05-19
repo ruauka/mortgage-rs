@@ -70,7 +70,8 @@
 В качестве ответа возвращается JSON и `status code: 200`:
 ```json
 {
-   "result": {
+   "id": 0,                                 // id расчета, инкрементируется на каждом расчете
+   "loan": {
       "params": {                           // запрашиваемые параметры кредита
          "object_cost": 5000000,
          "initial_payment": 1000000,                
@@ -90,21 +91,21 @@
 }
 ```
 
-В случае, если не выбрана ни одна из программ (во входном JSON все поля программы `false`), то требуется возвращать `status code: 400` и ошибку формата:
+В случае, если не выбрана ни одна из программ (во входном JSON все поля программы `false`), то требуется возвращать `status code: 400` и ошибку:
 ```json
 {
     "error": "choose program"
 }
 ```
 
-В случае, если выбрана более, чем одна программа, то требуется возвращать `status code: 400` и ошибку формата:
+В случае, если выбрана более, чем одна программа, то требуется возвращать `status code: 400` и ошибку:
 ```json
 {
    "error": "choose only 1 program"
 }
 ```
 
-В случае, если первоначальный взнос ниже 20% от стоимости объекта, то требуется возвращать `status code: 400` и ошибку формата:
+В случае, если первоначальный взнос ниже 20% от стоимости объекта, то требуется возвращать `status code: 400` и ошибку:
 ```json
 {
     "error": "the initial payment should be more"
@@ -119,62 +120,68 @@
 ```json
 [
    {
-      "id": 0, // id расчета в кэше
-      "params": {
-         "object_cost": 5000000,
-         "initial_payment": 1000000,
-         "months": 240
-      },
-      "program": {
-         "salary": true
-      },
-      "aggregates": {
-         "rate": 8,
-         "loan_sum": 4000000,
-         "monthly_payment": 33458,
-         "overpayment": 4029920,
-         "last_payment_date": "2044-02-18"
+      "id": 0,
+      "loan": {
+          "params": {
+              "object_cost": 5000000,
+              "initial_payment": 1000000,
+              "months": 240
+          },
+          "program": {
+              "salary": true
+          },
+          "aggregates": {
+              "rate": 8,
+              "loan_sum": 4000000,
+              "monthly_payment": 33458,
+              "overpayment": 4029920,
+              "last_payment_date": "2044-02-18"
+          }
       }
    },
    {
       "id": 1,
-      "params": {
-         "object_cost": 8000000,
-         "initial_payment": 2000000,
-         "months": 200
-      },
-      "program": {
-         "military": true
-      },
-      "aggregates": {
-         "rate": 9,
-         "loan_sum": 6000000,
-         "monthly_payment": 58019,
-         "overpayment": 5603800,
-         "last_payment_date": "2040-10-18"
+      "loan": {
+          "params": {
+              "object_cost": 8000000,
+              "initial_payment": 2000000,
+              "months": 200
+          },
+          "program": {
+              "military": true
+          },
+          "aggregates": {
+              "rate": 9,
+              "loan_sum": 6000000,
+              "monthly_payment": 58019,
+              "overpayment": 5603800,
+              "last_payment_date": "2040-10-18"
+          }
       }
    },
    {
       "id": 2,
-      "params": {
-         "object_cost": 12000000,
-         "initial_payment": 3000000,
-         "months": 120
-      },
-      "program": {
-         "base": true
-      },
-      "aggregates": {
-         "rate": 10,
-         "loan_sum": 9000000,
-         "monthly_payment": 118936,
-         "overpayment": 5272320,
-         "last_payment_date": "2034-02-18"
+      "loan": {
+          "params": {
+              "object_cost": 12000000,
+              "initial_payment": 3000000,
+              "months": 120
+          },
+          "program": {
+              "base": true
+          },
+          "aggregates": {
+              "rate": 10,
+              "loan_sum": 9000000,
+              "monthly_payment": 118936,
+              "overpayment": 5272320,
+              "last_payment_date": "2034-02-18"
+          }
       }
    }
 ]
 ```
-Если кэш пустой, то требуется возвращать `status code: 400` и ошибку формата:
+Если кэш пустой, то требуется возвращать `status code: 400` и ошибку:
 ```json
 {
    "error": "empty cache"

@@ -15,7 +15,7 @@ const MILITARY: f64 = 9_f64;
 const BASE: f64 = 10_f64;
 
 // Структура ипотечной программы.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Mortgage {
     pub params: Params,
     pub program: Program,

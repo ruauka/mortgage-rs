@@ -13,9 +13,10 @@ pub struct AppState {
 }
 
 /// Добавление в кэш.
-pub async fn insert(state: Arc<RwLock<AppState>>, loan: Mortgage) {
+pub async fn insert(state: Arc<RwLock<AppState>>, loan: Mortgage) -> u32 {
     let mut binding = state.write().unwrap();
     let id: u32 = binding.id;
     binding.cache.insert(id, loan);
     binding.id += 1;
+    id
 }
