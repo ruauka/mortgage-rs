@@ -1,8 +1,10 @@
 use axum::{extract::Request, middleware::Next, response::Response};
 use tracing::{error, info};
 
-/// Обертка замера времени и статуса.
+/// Middleware.
 pub async fn middleware(request: Request, next: Next) -> Response {
+    // ендпоит
+    let path = &request.uri().path().to_string();
     // замер времени
     let start = std::time::Instant::now();
     // вызов хендлера
@@ -13,9 +15,15 @@ pub async fn middleware(request: Request, next: Next) -> Response {
     let end = start.elapsed().as_micros();
     // логирование ответа хендлера
     if response.status().is_success() {
-        info!("status_code: {}, duration: {} μs", status, end);
+        info!(
+            "path={}, status=Success, status_code={}, duration={} μs",
+            path, status, end
+        );
     } else {
-        error!("status_code: {}, duration: {} μs", status, end)
+        error!(
+            "path={}, status=Error, status_code={}, duration={} μs",
+            path, status, end
+        )
     }
     // ответ декоратора
     response

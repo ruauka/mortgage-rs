@@ -190,8 +190,8 @@
 - `status_code` - http код запроса
 - `duration` - время работы эндпоинта (μs - microseconds)
 ```bash
-2024-05-12T17:47:51.097698Z  INFO status_code: 200 OK, duration: 361 μs
-2024-05-12T17:47:55.116620Z ERROR status_code: 400 Bad Request, duration: 344 μs
+2024-05-19T10:56:27.387040Z  INFO path=/execute, status=Success, status_code=200 OK, duration=292 μs
+2024-05-19T10:56:33.507095Z ERROR path=/execute, status=Error, status_code=400 Bad Request, duration=168 μs
 ```
 Требование обязательно, даже если используемый вами web-framework предоставляет такой функционал "из коробки".
 
