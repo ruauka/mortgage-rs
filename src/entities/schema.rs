@@ -18,7 +18,7 @@ pub struct Response {
 }
 
 impl Response {
-    /// Конструктор
+    /// Конструктор.
     pub fn new(id: u32, loan: Mortgage) -> Self {
         Self { id, loan }
     }

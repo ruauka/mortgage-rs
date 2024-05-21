@@ -15,19 +15,19 @@ pub async fn mortgage(
     // объект кредита с нужными полями
     let mut loan: Mortgage = Mortgage::new(req);
     // проверка на наличие больше 1 программы в запросе
-    loan.loan_program_check()?;
+    loan.loan_program_check().await?;
     // проверка минимальной суммы первоначального взноса
-    loan.min_initial_payment_check()?;
+    loan.min_initial_payment_check().await?;
     // расчет суммы кредита
-    loan.loan_sum_calc();
+    loan.loan_sum_calc().await;
     // Определение процентной ставки
-    loan.rate_calc()?;
+    loan.rate_calc().await?;
     // расчет ежемесячного платежа
-    loan.monthly_payment_calc();
+    loan.monthly_payment_calc().await;
     // расчет переплаты
-    loan.overpayment_calc();
+    loan.overpayment_calc().await;
     // расчет даты последнего платежа
-    loan.last_payment_date_calc();
+    loan.last_payment_date_calc().await;
     // запись расчета в кэш
     let id: u32 = insert(state, loan.clone()).await;
     // формирование ответа
@@ -45,14 +45,14 @@ pub async fn cache(State(state): State<SharedState>) -> Result<Json<Vec<Response
         return Err(EmptyCache);
     }
     // формирование ответа
-    let mut response: Vec<Response> = Vec::with_capacity(cache.len());
+    let mut resp: Vec<Response> = Vec::with_capacity(cache.len());
     let mut r: Response = Response::default();
     // перекладка из кэша
     for (k, v) in cache.iter() {
         r.id = *k;
         r.loan = v.clone();
-        response.push(r.clone())
+        resp.push(r.clone())
     }
     // ответ 200
-    Ok(Json(response))
+    Ok(Json(resp))
 }
