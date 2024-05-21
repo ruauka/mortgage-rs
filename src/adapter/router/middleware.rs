@@ -1,18 +1,20 @@
+use axum::http::StatusCode;
 use axum::{extract::Request, middleware::Next, response::Response};
+use std::time::Instant;
 use tracing::{error, info};
 
 /// Middleware.
 pub async fn middleware(request: Request, next: Next) -> Response {
     // эндпоит
-    let path = &request.uri().path().to_string();
+    let path: &String = &request.uri().path().to_string();
     // старт времени
-    let start = std::time::Instant::now();
+    let start: Instant = Instant::now();
     // вызов хендлера
-    let response = next.run(request).await;
+    let response: Response = next.run(request).await;
     // статус ответа хендлера
-    let status = response.status();
+    let status: StatusCode = response.status();
     // стоп времени
-    let end = start.elapsed().as_micros();
+    let end: u128 = start.elapsed().as_micros();
     // логирование ответа хендлера
     if response.status().is_success() {
         info!(
