@@ -15,19 +15,19 @@ pub async fn mortgage(
     // объект кредита с нужными полями
     let mut loan: Mortgage = Mortgage::new(req);
     // проверка на наличие больше 1 программы в запросе
-    loan.loan_program_check().await?;
+    loan.loan_program_check()?;
     // проверка минимальной суммы первоначального взноса
-    loan.min_initial_payment_check().await?;
+    loan.min_initial_payment_check()?;
     // расчет суммы кредита
-    loan.loan_sum_calc().await;
+    loan.loan_sum_calc();
     // Определение процентной ставки
-    loan.rate_calc().await?;
+    loan.rate_calc()?;
     // расчет ежемесячного платежа
-    loan.monthly_payment_calc().await;
+    loan.monthly_payment_calc();
     // расчет переплаты
-    loan.overpayment_calc().await;
+    loan.overpayment_calc();
     // расчет даты последнего платежа
-    loan.last_payment_date_calc().await;
+    loan.last_payment_date_calc();
     // запись расчета в кэш
     let id: u32 = insert(state, loan.clone()).await;
     // формирование ответа

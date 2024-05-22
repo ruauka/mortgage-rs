@@ -70,7 +70,7 @@ impl Mortgage {
     }
 
     /// Проверка на наличие больше 1 программы в запросе.
-    pub async fn loan_program_check(&mut self) -> Result<(), AppError> {
+    pub fn loan_program_check(&mut self) -> Result<(), AppError> {
         let mut counter: i8 = i8::default();
 
         let check_vec: Vec<bool> = vec![
@@ -93,7 +93,7 @@ impl Mortgage {
     }
 
     /// Проверка минимальной суммы первоначального взноса.
-    pub async fn min_initial_payment_check(&self) -> Result<(), AppError> {
+    pub fn min_initial_payment_check(&self) -> Result<(), AppError> {
         if self.params.initial_payment
             < self.params.object_cost * MIN_INITIAL_PAYMENT_PERCENT / 100_f64
         {
@@ -104,12 +104,12 @@ impl Mortgage {
     }
 
     /// Расчет суммы кредита.
-    pub async fn loan_sum_calc(&mut self) {
+    pub fn loan_sum_calc(&mut self) {
         self.aggregates.loan_sum = self.params.object_cost - self.params.initial_payment
     }
 
     /// Определение процентной ставки.
-    pub async fn rate_calc(&mut self) -> Result<(), AppError> {
+    pub fn rate_calc(&mut self) -> Result<(), AppError> {
         if self.program.salary.unwrap_or_default() {
             self.aggregates.rate = SALARY;
             Ok(())
@@ -125,7 +125,7 @@ impl Mortgage {
     }
 
     /// Pасчет ежемесячного аннуитетного платежа
-    pub async fn monthly_payment_calc(&mut self) {
+    pub fn monthly_payment_calc(&mut self) {
         let monthly_rate: f64 = self.aggregates.rate / 100_f64 / 12_f64;
         let pow_monthly_rate: f64 = (1_f64 + monthly_rate).powf(self.params.months as f64);
 
@@ -137,13 +137,13 @@ impl Mortgage {
     }
 
     /// Расчет переплаты за весь срок кредита.
-    pub async fn overpayment_calc(&mut self) {
+    pub fn overpayment_calc(&mut self) {
         self.aggregates.overpayment =
             self.aggregates.monthly_payment * self.params.months as f64 - self.aggregates.loan_sum
     }
 
     /// Расчет даты последнего платежа.
-    pub async fn last_payment_date_calc(&mut self) {
+    pub fn last_payment_date_calc(&mut self) {
         self.aggregates.last_payment_date = Utc::now()
             .checked_add_months(Months::new(self.params.months as u32))
             .unwrap()
