@@ -20,3 +20,29 @@ pub async fn insert(state: Arc<RwLock<AppState>>, loan: Mortgage) -> u32 {
     binding.id += 1;
     id
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::entities::mortgage::Program;
+    use crate::entities::schema::Request;
+
+    #[tokio::test]
+    async fn test_insert() {
+        let req = Request {
+            object_cost: 100.0,
+            initial_payment: 30.0,
+            months: 12,
+            program: Program {
+                base: Some(true),
+                military: None,
+                salary: None,
+            },
+        };
+        let state: Arc<RwLock<AppState>> = SharedState::default();
+        let loan: Mortgage = Mortgage::new(req);
+
+        let actual: u32 = insert(state, loan).await;
+        assert_eq!(actual, 0)
+    }
+}

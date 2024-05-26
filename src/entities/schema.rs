@@ -2,7 +2,7 @@ use crate::entities::mortgage::{Mortgage, Program};
 use serde::{Deserialize, Serialize};
 
 /// Запрос.
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Request {
     pub object_cost: f64,
     pub initial_payment: f64,

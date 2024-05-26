@@ -34,11 +34,11 @@ pub struct Params {
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Program {
     #[serde(skip_serializing_if = "Option::is_none")]
-    base: Option<bool>,
+    pub base: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    military: Option<bool>,
+    pub military: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    salary: Option<bool>,
+    pub salary: Option<bool>,
 }
 
 /// Расчитываемые агрегаты.
@@ -84,9 +84,13 @@ impl Mortgage {
                 counter += 1;
             }
         }
-
+        // проверка, что выбрано не больше 1 программы кредитования
         if counter > 1 {
             return Err(LoanProgramMoreThanOne);
+        }
+        // проверка, что выбрана хотя бы 1 программа кредитования
+        if counter == 0 {
+            return Err(LoanProgramEmpty);
         }
 
         Ok(())
@@ -109,18 +113,13 @@ impl Mortgage {
     }
 
     /// Определение процентной ставки.
-    pub fn rate_calc(&mut self) -> Result<(), AppError> {
+    pub fn rate_calc(&mut self) {
         if self.program.salary.unwrap_or_default() {
             self.aggregates.rate = SALARY;
-            Ok(())
         } else if self.program.military.unwrap_or_default() {
             self.aggregates.rate = MILITARY;
-            Ok(())
         } else if self.program.base.unwrap_or_default() {
             self.aggregates.rate = BASE;
-            Ok(())
-        } else {
-            Err(LoanProgramEmpty)
         }
     }
 
@@ -149,5 +148,112 @@ impl Mortgage {
             .unwrap()
             .format("%Y-%m-%d")
             .to_string();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_loan_program_check() {
+        // Ok. Выбрана одна прорамма кредитования
+        let mut loan: Mortgage = Mortgage::default();
+        loan.program.salary = Some(true);
+        let actual: bool = loan.loan_program_check().is_ok();
+        assert_eq!(actual, true);
+        // Err. Выбрано 2 прораммы кредитования
+        let mut loan: Mortgage = Mortgage::default();
+        loan.program.salary = Some(true);
+        loan.program.military = Some(true);
+        let actual: AppError = loan.loan_program_check().err().unwrap();
+        assert_eq!(actual, LoanProgramMoreThanOne);
+        // Err. Не выбрано ни одной прораммы кредитования
+        let mut loan: Mortgage = Mortgage::default();
+        let actual: AppError = loan.loan_program_check().err().unwrap();
+        assert_eq!(actual, LoanProgramEmpty)
+    }
+
+    #[test]
+    fn test_min_initial_payment_check() {
+        let mut loan: Mortgage = Mortgage::default();
+        loan.params.object_cost = 100_f64;
+        // Ok. Допустимый минимальный платеж
+        loan.params.initial_payment = 25_f64;
+        let actual: bool = loan.min_initial_payment_check().is_ok();
+        assert_eq!(actual, true);
+        // Err. Первоначальный взнос меньше минимально допустимого.
+        loan.params.initial_payment = 10_f64;
+        let actual: AppError = loan.min_initial_payment_check().err().unwrap();
+        assert_eq!(actual, MinInitialPayment)
+    }
+
+    #[test]
+    fn test_loan_sum_calc() {
+        let mut loan: Mortgage = Mortgage::default();
+        loan.params.object_cost = 100_f64;
+        loan.params.initial_payment = 25_f64;
+        loan.loan_sum_calc();
+        assert_eq!(loan.aggregates.loan_sum, 75_f64)
+    }
+
+    #[test]
+    fn test_rate_calc() {
+        let mut loan: Mortgage = Mortgage::default();
+        loan.program.salary = Some(true);
+        loan.rate_calc();
+        assert_eq!(loan.aggregates.rate, SALARY);
+
+        let mut loan: Mortgage = Mortgage::default();
+        loan.program.military = Some(true);
+        loan.rate_calc();
+        assert_eq!(loan.aggregates.rate, MILITARY);
+
+        let mut loan: Mortgage = Mortgage::default();
+        loan.program.base = Some(true);
+        loan.rate_calc();
+        assert_eq!(loan.aggregates.rate, BASE)
+    }
+
+    #[test]
+    fn test_monthly_payment_calc() {
+        let mut loan: Mortgage = Mortgage::default();
+        loan.params.months = 240;
+        loan.aggregates.loan_sum = 999_999_f64;
+
+        loan.aggregates.rate = SALARY;
+        loan.monthly_payment_calc();
+        assert_eq!(loan.aggregates.monthly_payment, 8365_f64);
+
+        loan.aggregates.rate = MILITARY;
+        loan.monthly_payment_calc();
+        assert_eq!(loan.aggregates.monthly_payment, 8998_f64);
+
+        loan.aggregates.rate = BASE;
+        loan.monthly_payment_calc();
+        assert_eq!(loan.aggregates.monthly_payment, 9651_f64);
+    }
+
+    #[test]
+    fn test_overpayment_calc() {
+        let mut loan: Mortgage = Mortgage::default();
+        loan.aggregates.monthly_payment = 100_f64;
+        loan.params.months = 60;
+        loan.aggregates.loan_sum = 1000_f64;
+        loan.overpayment_calc();
+        assert_eq!(loan.aggregates.overpayment, 5000_f64)
+    }
+
+    #[test]
+    fn test_last_payment_date_calc() {
+        let mut loan: Mortgage = Mortgage::default();
+        loan.params.months = 240;
+        loan.last_payment_date_calc();
+        let expected = Utc::now()
+            .checked_add_months(Months::new(loan.params.months as u32))
+            .unwrap()
+            .format("%Y-%m-%d")
+            .to_string();
+        assert_eq!(loan.aggregates.last_payment_date, expected)
     }
 }

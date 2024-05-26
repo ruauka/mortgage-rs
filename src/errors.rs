@@ -8,7 +8,7 @@ use thiserror::Error;
 pub type Result<T, E = AppError> = core::result::Result<T, E>;
 
 /// Ошибки сервиса.
-#[derive(Debug, Error)]
+#[derive(Debug, PartialEq, Error)]
 pub enum AppError {
     // не выбрана программа кредитования
     #[error("choose credit program")]

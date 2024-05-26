@@ -17,11 +17,11 @@ pub async fn execute() {
         .compact()
         .init();
     // создание 'state' объекта
-    let shared_state: Arc<RwLock<AppState>> = SharedState::default();
+    let state: Arc<RwLock<AppState>> = SharedState::default();
     // хост и порт
     let address: String = format!("{}:{}", cfg.host, cfg.port);
     // создание роутера и регистрация хендлеров
-    let router: Router = router(shared_state).await;
+    let router: Router = router(state).await;
     // tcp-движок
     let listener = tokio::net::TcpListener::bind(address).await.unwrap();
     info!(
