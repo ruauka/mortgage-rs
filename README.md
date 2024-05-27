@@ -1,4 +1,5 @@
 [![build](https://github.com/ruauka/mortgage-rs/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ruauka/mortgage-rs/actions/workflows/pipeline.yml)
+[![Coverage Status](https://codecov.io/github/ruauka/mortgage-rs/coverage.svg?branch=master)](https://codecov.io/gh/ruauka/mortgage-rs)
 
 # Задание
 
