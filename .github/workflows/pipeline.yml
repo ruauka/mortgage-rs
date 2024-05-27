@@ -35,11 +35,10 @@ jobs:
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
-          profile: minimal
-          toolchain: stable
+          toolchain: nightly
           override: true
 
-      - name: Run cargo test
+      - name: Run tests
         run: cargo test --verbose
         env:
           CARGO_INCREMENTAL: '0'
