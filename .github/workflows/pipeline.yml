@@ -67,33 +67,40 @@ jobs:
           command: clippy
           args: -- -D warnings
 
-#  test:
-#    name: Test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout master
-#        uses: actions/checkout@v3
-#
-#      - name: Install stable toolchain
-#        uses: actions-rs/toolchain@v1
-#        with:
-#          toolchain: nightly
-#          override: true
-#
-#      - name: Run tests
-#        run: cargo test
-##        env:
-##          CARGO_INCREMENTAL: '0'
-##          RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
-##          RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
-#
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+
+      - name: Run tests
+        run: |
+          export CARGO_INCREMENTAL=0
+          export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+          export RUSTDOCFLAGS="-Cpanic=abort"
+          cargo build --verbose $CARGO_OPTIONS
+          cargo test --verbose $CARGO_OPTIONS
+          |
+            zip -0 ccov.zip `find . \( -name "YOUR_PROJECT_NAME*.gc*" \) -print`;
+            ./grcov ccov.zip -s . -t lcov --llvm --branch --ignore-not-existing --ignore "/*" -o lcov.info;
+            bash <(curl -s https://codecov.io/bash) -f lcov.info;
+
 #      - name: Create coverage report
 #        uses: actions-rs/grcov@v0.1
-#
-#      - name: Upload coverage report
-#        uses: codecov/codecov-action@v4.0.1
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          fail_ci_if_error: true
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./lcov.info
+          fail_ci_if_error: true
 
 
