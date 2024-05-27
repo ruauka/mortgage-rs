@@ -194,7 +194,7 @@ mod tests {
         loan.params.object_cost = 100_f64;
         loan.params.initial_payment = 25_f64;
         loan.loan_sum_calc();
-        assert_eq!(loan.aggregates.loan_sum, 7_f64)
+        assert_eq!(loan.aggregates.loan_sum, 75_f64)
     }
 
     #[test]
