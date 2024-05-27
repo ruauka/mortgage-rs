@@ -9,9 +9,12 @@ lint:
 	@cargo clippy
 
 test:
+	@cargo test
+
+coverage:
 	@cargo llvm-cov
 
-test_html:
+coverage_html:
 	@cargo llvm-cov --html && open target/llvm-cov/html/index.html
 
 doc:
