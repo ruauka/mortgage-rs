@@ -225,7 +225,7 @@ clippy.cargo = { level = "deny", priority = -1 }
 clippy.nursery = "deny"
 ```
 5. Проект содержит `Dockerfile`. "Вес" образа должен быть не более `150 MB`.
-6. Проект содержит `CI pipeline` конфиг этапами:
+6. Проект содержит `CI pipeline` конфиг c этапами:
     - Check (cargo check...)
     - Fmt (cargo fmt...)
     - Clippy (cargo clippy...)
