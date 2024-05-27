@@ -86,11 +86,13 @@ jobs:
 
       - name: Run tests
         run: cargo test
+        # флаги для формирования отчета grcov
         env:
           CARGO_INCREMENTAL: '0'
           RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
           RUSTDOCFLAGS: '-Cpanic=abort'
 
+      # формирование отчета grcov для codecov
       - name: Create coverage report
         uses: actions-rs/grcov@v0.1
 

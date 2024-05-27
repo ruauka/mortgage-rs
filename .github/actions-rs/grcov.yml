@@ -1,2 +1,3 @@
+# конфиг grcov
 output-type: lcov
 output-path: ./lcov.info
