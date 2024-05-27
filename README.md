@@ -1,3 +1,5 @@
+[![build](https://github.com/ruauka/mortgage-rs/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ruauka/mortgage-rs/actions/workflows/pipeline.yml)
+
 # Задание
 
 Требуется написать сервис расчета параметров ипотеки (`ипотечный калькулятор`).
