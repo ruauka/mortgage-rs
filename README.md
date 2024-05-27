@@ -197,6 +197,8 @@
 
 ## Middleware
 Требуется реализовать middleware, который будет выводить в консоль информацию о запросе:
+- `path` - эндпоинт
+- `status` - статус запроса
 - `status_code` - http код запроса
 - `duration` - время работы эндпоинта (μs - microseconds)
 ```bash
@@ -223,9 +225,18 @@ clippy.cargo = { level = "deny", priority = -1 }
 clippy.nursery = "deny"
 ```
 5. Проект содержит `Dockerfile`. "Вес" образа должен быть не более `150 MB`.
-6. Проект содержит `Makefile`, в котором указаны команды:
+6. Проект содержит `CI pipeline` конфиг этапами:
+    - Check (cargo check...)
+    - Fmt (cargo fmt...)
+    - Clippy (cargo clippy...)
+    - Test (cargo test...)
+
+   `CI Pipeline` запускается:
+     - После коммита в master ветку
+     - После мержа pull-request в master ветку
+7. Проект содержит `Makefile`, в котором указаны команды:
     - запуска тестов
-    - запуска clippy
+    - запуска тестов с отчетом покрытия кода
     - сборки образа
     - запуска контейнера
     - остановки и удаления контейнера
