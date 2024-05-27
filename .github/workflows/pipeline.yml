@@ -39,7 +39,7 @@ jobs:
           override: true
 
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test
         env:
           CARGO_INCREMENTAL: '0'
           RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
@@ -52,7 +52,6 @@ jobs:
         uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
           fail_ci_if_error: true
 
   lints:
