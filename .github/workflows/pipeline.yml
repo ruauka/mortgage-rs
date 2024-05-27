@@ -44,11 +44,13 @@ jobs:
         with:
           command: test
 
+      - name: rust-grcov
+        uses: actions-rs/grcov@v0.1
+
       - name: Upload coverage report
         uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
           fail_ci_if_error: true
 
   lints:
