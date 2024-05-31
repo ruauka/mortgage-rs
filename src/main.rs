@@ -2,8 +2,9 @@ use crate::server::execute;
 
 mod adapter;
 mod config;
-mod entities;
 mod errors;
+mod logic;
+mod schema;
 mod server;
 
 #[tokio::main]

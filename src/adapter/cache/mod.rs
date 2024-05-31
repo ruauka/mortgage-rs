@@ -1,4 +1,4 @@
-use crate::entities::mortgage::Mortgage;
+use crate::logic::mortgage::Mortgage;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 
@@ -24,8 +24,8 @@ pub async fn insert(state: Arc<RwLock<AppState>>, loan: Mortgage) -> u32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::entities::mortgage::Program;
-    use crate::entities::schema::Request;
+    use crate::logic::mortgage::Program;
+    use crate::schema::Request;
 
     #[tokio::test]
     async fn test_insert() {

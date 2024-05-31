@@ -1,6 +1,6 @@
-use crate::entities::schema::Request;
 use crate::errors::AppError;
 use crate::errors::AppError::{LoanProgramEmpty, LoanProgramMoreThanOne, MinInitialPayment};
+use crate::schema::Request;
 use chrono::prelude::*;
 use chrono::Months;
 use serde::{Deserialize, Serialize};

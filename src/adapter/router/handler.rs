@@ -1,8 +1,8 @@
 use crate::adapter::cache::{insert, SharedState};
-use crate::entities::mortgage::Mortgage;
-use crate::entities::schema::{Request, Response};
 use crate::errors::AppError::EmptyCache;
 use crate::errors::{AppError, Result};
+use crate::logic::mortgage::Mortgage;
+use crate::schema::{Request, Response};
 use axum::extract::State;
 use axum::Json;
 use std::collections::HashMap;
@@ -62,8 +62,8 @@ mod tests {
     use super::*;
     use crate::adapter::cache::AppState;
     use crate::adapter::router::router;
-    use crate::entities::mortgage::{Aggregates, Params, Program};
-    use crate::entities::schema::Request as Req;
+    use crate::logic::mortgage::{Aggregates, Params, Program};
+    use crate::schema::Request as Req;
     use axum::{
         body::{Body, Bytes},
         http::{self, Request, StatusCode},
