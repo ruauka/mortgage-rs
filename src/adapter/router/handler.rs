@@ -1,7 +1,7 @@
 use crate::adapter::cache::{insert, SharedState};
+use crate::domain::mortgage::Mortgage;
 use crate::errors::AppError::EmptyCache;
 use crate::errors::{AppError, Result};
-use crate::logic::mortgage::Mortgage;
 use crate::schema::{Request, Response};
 use axum::extract::State;
 use axum::Json;
@@ -62,7 +62,7 @@ mod tests {
     use super::*;
     use crate::adapter::cache::AppState;
     use crate::adapter::router::router;
-    use crate::logic::mortgage::{Aggregates, Params, Program};
+    use crate::domain::mortgage::{Aggregates, Params, Program};
     use crate::schema::Request as Req;
     use axum::{
         body::{Body, Bytes},

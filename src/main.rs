@@ -2,8 +2,8 @@ use crate::server::execute;
 
 mod adapter;
 mod config;
+mod domain;
 mod errors;
-mod logic;
 mod schema;
 mod server;
 

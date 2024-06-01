@@ -1,4 +1,4 @@
-use crate::logic::mortgage::{Mortgage, Program};
+use crate::domain::mortgage::{Mortgage, Program};
 use serde::{Deserialize, Serialize};
 
 /// Запрос.
