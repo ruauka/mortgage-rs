@@ -228,6 +228,10 @@
 localhost:8080
 ```
 3. Покрытие unit-тестами > 80%.
+<p align="left">
+    <img src="assets/coverage.png" width="800">
+</p>
+
 4. Код должен проходить проверку `clippy`. Конфигурация:
 ```toml
 [workspace.lints]
