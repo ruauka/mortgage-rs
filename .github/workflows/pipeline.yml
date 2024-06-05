@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v2
         with:
           profile: minimal
           toolchain: stable
           override: true
 
       - name: Run cargo check
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v2
         with:
           command: check
 
@@ -33,17 +33,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v2
         with:
           profile: minimal
           toolchain: stable
           override: true
 
       - name: Run cargo fmt
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v2
         with:
           command: fmt
           args: --all -- --check
@@ -53,17 +53,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v2
         with:
           profile: minimal
           toolchain: stable
           override: true
 
       - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v2
         with:
           command: clippy
           args: -- -D warnings
@@ -73,10 +73,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v2
         with:
           profile: minimal
           toolchain: nightly
