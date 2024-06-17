@@ -147,4 +147,4 @@ jobs:
             docker rmi ruauka/mortgage
             
             # Run new container
-            docker run -d --rm --name mortgage -p 8080:8000 ruauka/mortgage
+            docker run -d --rm --name mortgage -p 8080:8080 ruauka/mortgage
