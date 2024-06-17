@@ -124,3 +124,27 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/mortgage:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    #    if: github.event_name == 'push'
+    needs: build_push
+    steps:
+      - name: SSH connect
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            # Login into DockerHub
+            docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+            
+            # Stop current container
+            docker stop mortgage
+            
+            # Remove current image
+            docker rmi ruauka/mortgage
+            
+            # Run new container
+            docker run -d --rm --name mortgage -p 8080:8000 ruauka/mortgage
