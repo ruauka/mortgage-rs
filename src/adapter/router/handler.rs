@@ -48,7 +48,7 @@ pub async fn cache(State(state): State<SharedState>) -> Result<Json<Vec<Response
     let mut resp: Vec<Response> = Vec::with_capacity(cache.len());
     let mut r: Response = Response::default();
     // перекладка из кэша
-    for (k, v) in cache.iter() {
+    for (k, v) in cache.iter() { // .fold()
         r.id = *k;
         r.loan = v.clone();
         resp.push(r.clone())
