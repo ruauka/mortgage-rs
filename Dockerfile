@@ -1,5 +1,5 @@
 # Rust as the base image
-FROM rust:1.75.0-slim-bullseye as builder
+FROM rust:1.75.0-slim-bullseye AS builder
 
 # fix rust http openssl bug
 RUN apt update
