@@ -15,6 +15,10 @@ test:
 	@echo "  >  Testing code..."
 	@cargo test
 
+vendor:
+	@echo "  >  Vendoring deps..."
+	@cargo vendor > .cargo/config.toml
+
 coverage:
 	@echo "  >  Testing code and print CLI coverage..."
 	@cargo llvm-cov
